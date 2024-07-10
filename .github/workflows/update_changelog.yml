@@ -26,7 +26,6 @@ jobs:
         id: changelog
         run: |
           python generate_changelog.py
-          cat new_changelog.txt >> $GITHUB_ENV
           echo "CHANGELOG_CONTENT=$(cat new_changelog.txt)" >> $GITHUB_ENV
 
       - name: Commit and push changes
