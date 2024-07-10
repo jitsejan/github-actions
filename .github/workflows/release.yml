@@ -32,11 +32,14 @@ jobs:
           echo "$(git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:%s)" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-      - name: Determine next version
-        id: determine_version
+      - name: Determine next version and generate release notes
+        id: determine_version_and_notes
         run: |
-          new_version=$(python determine_version.py ${{ env.latest_tag }} "${{ env.commit_messages }}")
+          new_version_and_notes=$(python determine_version.py ${{ env.latest_tag }} "${{ env.commit_messages }}")
+          new_version=$(echo "$new_version_and_notes" | head -n 1)
+          release_notes=$(echo "$new_version_and_notes" | tail -n +2)
           echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
+          echo "RELEASE_NOTES=$release_notes" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         id: create_release
@@ -44,7 +47,7 @@ jobs:
         with:
           tag_name: ${{ env.NEW_VERSION }}
           release_name: ${{ env.NEW_VERSION }}
-          body: "Automated release based on semantic versioning."
+          body: ${{ env.RELEASE_NOTES }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
