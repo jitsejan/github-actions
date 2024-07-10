@@ -1,3 +1,3 @@
 # Changelog
 
-- Merge pull request #2 from jitsejan/enable-changelog
+- Merge pull request #3 from jitsejan/move-release-from-sha-to-ref
