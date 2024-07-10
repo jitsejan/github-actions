@@ -31,7 +31,7 @@ def generate_changelog():
     with open('CHANGELOG.md', 'w') as f:
         f.write(combined_content)
 
-    return new_content
+    # return new_content
 
 
 if __name__ == '__main__':
