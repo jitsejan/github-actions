@@ -35,7 +35,7 @@ jobs:
       - name: Determine next version
         id: determine_version
         run: |
-          new_version=$(python determine_version.py ${{ env.latest_tag }} ${{ env.commit_messages }})
+          new_version=$(python determine_version.py ${{ env.latest_tag }} "${{ env.commit_messages }}")
           echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
 
       - name: Create GitHub Release

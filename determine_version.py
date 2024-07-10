@@ -7,7 +7,7 @@ def determine_version_bump(commits):
     patch_bump = re.compile(r'fix|chore|docs|style|refactor|perf|test')
 
     major = minor = patch = 0
-    for commit in commits:
+    for commit in [a.strip() for a in commits[0].split('\n')]:
         if major_bump.search(commit):
             major += 1
         elif minor_bump.search(commit):
