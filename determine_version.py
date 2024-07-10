@@ -37,10 +37,19 @@ def increment_version(version, bump_type):
         patch += 1
     return f'{major}.{minor}.{patch}'
 
+def generate_release_notes(commits, version):
+    notes = f"## What's Changed in {version}\n\n"
+    for commit in [a.strip() for a in commits[0].split('\n')]:
+        notes += f"- {commit}\n"
+    return notes
+
 if __name__ == '__main__':
     latest_tag = sys.argv[1]
     commits = sys.argv[2:]
 
     bump_type = determine_version_bump(commits)
     new_version = increment_version(latest_tag, bump_type)
+    release_notes = generate_release_notes(commits, new_version)
+
     print(new_version)
+    print(release_notes)
