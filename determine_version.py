@@ -1,15 +1,5 @@
-import subprocess
+import sys
 import re
-
-def get_latest_tag():
-    result = subprocess.run(['git', 'describe', '--tags', '--abbrev=0'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    if result.returncode != 0:
-        return '0.0.0'
-    return result.stdout.decode('utf-8').strip()
-
-def get_commits_since_last_tag(tag):
-    result = subprocess.run(['git', 'log', f'{tag}..HEAD', '--pretty=format:%s'], stdout=subprocess.PIPE)
-    return result.stdout.decode('utf-8').split('\n')
 
 def determine_version_bump(commits):
     major_bump = re.compile(r'BREAKING CHANGE')
@@ -48,8 +38,9 @@ def increment_version(version, bump_type):
     return f'{major}.{minor}.{patch}'
 
 if __name__ == '__main__':
-    latest_tag = get_latest_tag()
-    commits = get_commits_since_last_tag(latest_tag)
+    latest_tag = sys.argv[1]
+    commits = sys.argv[2:]
+
     bump_type = determine_version_bump(commits)
     new_version = increment_version(latest_tag, bump_type)
     print(new_version)
