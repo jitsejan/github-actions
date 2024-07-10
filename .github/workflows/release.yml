@@ -28,7 +28,9 @@ jobs:
       - name: Get commit messages since latest tag
         id: get_commit_messages
         run: |
-          echo "commit_messages=$(git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:%s)" >> $GITHUB_ENV
+          echo "commit_messages<<EOF" >> $GITHUB_ENV
+          echo "$(git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:%s)" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Determine next version
         id: determine_version
