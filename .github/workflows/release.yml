@@ -38,8 +38,12 @@ jobs:
           new_version_and_notes=$(python determine_version.py ${{ env.latest_tag }} "${{ env.commit_messages }}")
           new_version=$(echo "$new_version_and_notes" | head -n 1)
           release_notes=$(echo "$new_version_and_notes" | tail -n +2)
-          echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
-          echo "RELEASE_NOTES=$release_notes" >> $GITHUB_ENV
+          echo "new_version<<EOF" >> $GITHUB_ENV
+          echo "$NEW_VERSION" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          echo "release_notes<<EOF" >> $GITHUB_ENV
+          echo "$RELEASE_NOTES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         id: create_release
